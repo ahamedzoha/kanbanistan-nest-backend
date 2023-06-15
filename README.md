@@ -1,30 +1,81 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h1 align="left">Kanbanistan Project API using NestJS <img src="https://nestjs.com/img/logo-small.svg" width="35" alt="Nest Logo" /> and MongoDB<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" width="35"/>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+</h1>
+
+<p align="left">Nest is a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+
+## Primary Technology Stack
+
+- <i class="devicon-nestjs-plain colored"></i> [NestJS](https://nestjs.com/) - A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+- <i class="devicon-express-original colored"></i> [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js
+- <i class="devicon-mongodb-plain-wordmark colored"></i> [MongoDB](https://www.mongodb.com/) - MongoDB is a general purpose, document-based, distributed database built for modern application developers and for the cloud era.
+- <i class="devicon-typescript-plain colored"></i> [TypeScript](https://www.typescriptlang.org/) - TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.
+- [TypeORM](https://typeorm.io/#/) - TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8).
+- <i class="devicon-jest-plain colored"></i> [Jest](https://jestjs.io/) - Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
+- [Swagger](https://swagger.io/) - Simplify API development for users, teams, and enterprises with the Swagger open source and professional toolset. Find out how Swagger can help you design and document your APIs at scale.
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+REST API with authentication and user management to provide a complete backend solution for the
+`kanbanistan` project.
+
+### Functionalities
+
+**Authentication**
+
+- User can sign up with email/password
+  - User can sign in with Google/Facebook/Twitter
+  - User sign in with Google/Facebook/Twitter will be linked to the same account if the email is the same
+  - User will receive a confirmation email
+- User can sign in with email/password
+
+**User**
+
+- User can update his/her profile
+- User can delete his/her account
+
+**Board Management**
+
+- User can create a board
+- User can update a board
+- User can delete a board
+
+**Columns**
+
+- User can create a column
+- User can reorder columns
+- User can update a column
+- User can delete a column
+- User can archive/unarchive a column
+
+**Cards**
+
+- User can create a card
+- User can reorder cards
+- User can update a card
+- User can delete a card
+- User can archive/unarchive a card
+- User can add/remove a member to/from a card
+- User can add/remove a label to/from a card
+- User can add/remove a checklist to/from a card
+- User can add/remove an attachment to/from a card
+- User can add/remove a due date to/from a card
+- User can add/remove a comment to/from a card
+- User can add/remove a description to/from a card
+
+## Requirements
+
+- [Node.js](https://nodejs.org/en/) >= 14.15.4
+- [NestJS CLI](https://docs.nestjs.com/cli/overview) >= 7.5.1
+- [TypeScript](https://www.typescriptlang.org/) >= 4.1.3
+- [MongoDB](https://www.mongodb.com/) >= 4.4.3
+- [NPM](https://www.npmjs.com/) >= 6.14.10
+- [Git](https://git-scm.com/) >= 2.30.0
+- [Docker](https://www.docker.com/) >= 20.10.2
+- [Docker Compose](https://docs.docker.com/compose/) >= 1.27.4
+-
 
 ## Installation
 
@@ -60,13 +111,13 @@ $ npm run test:cov
 
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+This project is currently developed and maintained by me. I plan to make this more functional and heartily support any issue submission or PR to the project. Thank you!
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Azaz Ahamed](https://azazahamed.com)
+- Website - [https://azazahamed.com](https://azazahamed.com)
+<!-- - Twitter - [@nestframework](https://twitter.com/nestframework) -->
 
 ## License
 
