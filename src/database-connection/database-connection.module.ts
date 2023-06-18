@@ -1,6 +1,6 @@
-import { Global, Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Global, Module } from "@nestjs/common"
+import { MongooseModule, MongooseModuleFactoryOptions } from "@nestjs/mongoose"
+import { ConfigModule, ConfigService } from "@nestjs/config"
 
 /**
  * @description
@@ -18,8 +18,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
  * class DatabaseConnectionModule
  * @summary
  * We use the `@Global()` decorator to make this module available
- * @class DatabaseConnectionModule
- * @module DatabaseConnectionModule
  * @see https://docs.nestjs.com/modules#global-modules
  */
 @Global()
@@ -29,7 +27,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
+        uri: configService.get<string>("MONGODB_URI"),
       }),
       inject: [ConfigService],
     }),
@@ -37,4 +35,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   exports: [MongooseModule],
 })
 export class DatabaseConnectionModule {}
-console.log('database connections', process.env.MONGODB_URI);
+console.log("database connections", process.env.MONGODB_URI)
