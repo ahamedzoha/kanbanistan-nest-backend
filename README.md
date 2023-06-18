@@ -11,8 +11,9 @@
 - <i class="devicon-nestjs-plain colored"></i> [NestJS](https://nestjs.com/) - A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
 - <i class="devicon-express-original colored"></i> [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js
 - <i class="devicon-mongodb-plain-wordmark colored"></i> [MongoDB](https://www.mongodb.com/) - MongoDB is a general purpose, document-based, distributed database built for modern application developers and for the cloud era.
+- [Nest Mongoose](https://docs.nestjs.com/techniques/mongodb) - Nest Mongoose is a wrapper around the Mongoose npm package.
 - <i class="devicon-typescript-plain colored"></i> [TypeScript](https://www.typescriptlang.org/) - TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.
-- [TypeORM](https://typeorm.io/#/) - TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8).
+
 - <i class="devicon-jest-plain colored"></i> [Jest](https://jestjs.io/) - Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
 - [Swagger](https://swagger.io/) - Simplify API development for users, teams, and enterprises with the Swagger open source and professional toolset. Find out how Swagger can help you design and document your APIs at scale.
 
@@ -75,7 +76,6 @@ REST API with authentication and user management to provide a complete backend s
 - [Git](https://git-scm.com/) >= 2.30.0
 - [Docker](https://www.docker.com/) >= 20.10.2
 - [Docker Compose](https://docs.docker.com/compose/) >= 1.27.4
--
 
 ## Installation
 
