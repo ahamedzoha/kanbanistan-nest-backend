@@ -23,7 +23,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
 @Global()
 @Module({
   imports: [
-    ConfigModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
