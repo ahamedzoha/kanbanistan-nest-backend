@@ -6,7 +6,7 @@ import {
 import { ConfigService } from "@nestjs/config"
 import { JwtService } from "@nestjs/jwt"
 import { InjectModel } from "@nestjs/mongoose"
-import { Error, Model, MongooseError } from "mongoose"
+import { Model, MongooseError } from "mongoose"
 import { CreateUserDto } from "src/users/dto/create-user.dto"
 import { User } from "src/users/schemas/user.schema"
 import * as argon2 from "argon2"
@@ -45,13 +45,15 @@ export class AuthService {
     const token = await this.signToken(currentUser.id, currentUser.email)
 
     return {
-      token,
+      access_token: token,
       user: {
         id: currentUser.id,
         email: currentUser.email,
       },
     }
   }
+
+  // async logout() {}
 
   async register(user: CreateUserDto) {
     const hashedPassword = await argon2.hash(user.password)

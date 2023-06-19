@@ -1,37 +1,27 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from "@nestjs/common"
+import { Body, Controller, Get, UseGuards } from "@nestjs/common"
 import { UsersService } from "./users.service"
-import { CreateUserDto } from "./dto/create-user.dto"
-import { UpdateUserDto } from "./dto/update-user.dto"
+import { AuthGuard } from "@nestjs/passport"
+import { JwtGuard } from "src/auth/guards/jwt.guard"
+import { GetUser } from "src/auth/decorators/get-user.decorator"
+import { User } from "./schemas/user.schema"
 
 @Controller("users")
+@UseGuards(JwtGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll()
+  @Get("me")
+  async userInfo(@Body("email") email: string) {
+    return await this.usersService.findUserInfo(email)
   }
 
-  @Get(":id")
-  async findOne(@Param("id") id: string) {
-    return await this.usersService.findOne(id)
-  }
+  // @Get("me")
+  // async userInfo(@GetUser() user: User) {
+  //   return user
+  // }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto)
-  }
-
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.usersService.remove(+id)
-  }
+  // @Get("me")
+  // async userInfo(@GetUser("email") email: string) {
+  //   return email
+  // }
 }
