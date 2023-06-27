@@ -7,13 +7,16 @@ import { ConfigService } from "@nestjs/config"
 import { JwtService } from "@nestjs/jwt"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model, MongooseError } from "mongoose"
-import { CreateUserDto } from "src/users/dto/create-user.dto"
+import { CreateUserDto } from "./dtos/create-user.dto"
 import { User } from "src/users/schemas/user.schema"
 import * as argon2 from "argon2"
-import { LoginUserDto } from "src/users/dto/login-user.dto"
+import { LoginUserDto } from "./dtos/login-user.dto"
+import { LogoutUserDto } from "./dtos/logout-user.dto"
 
 @Injectable()
 export class AuthService {
+  private readonly revokedTokens: string[] = []
+
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwt: JwtService,
@@ -27,10 +30,11 @@ export class AuthService {
     }
 
     return this.jwt.signAsync(payload, {
-      expiresIn: "15m",
-      secret: this.configService.get<string>("JWT_SECRET"),
+      expiresIn: "1h",
     })
   }
+
+  // async validateUser (payload){}
 
   async login(user: LoginUserDto) {
     const currentUser = await this.userModel.findOne({ email: user.email })
@@ -53,7 +57,10 @@ export class AuthService {
     }
   }
 
-  // async logout() {}
+  async logout(user: LogoutUserDto) {
+    // TODO: Implement logout by invalidating the token
+    this.revokedTokens.push(user.token)
+  }
 
   async register(user: CreateUserDto) {
     const hashedPassword = await argon2.hash(user.password)
