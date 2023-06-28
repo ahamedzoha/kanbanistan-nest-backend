@@ -12,7 +12,7 @@ import { User } from "src/users/schemas/user.schema"
 import * as argon2 from "argon2"
 import { LoginUserDto } from "./dtos/login-user.dto"
 import { LogoutUserDto } from "./dtos/logout-user.dto"
-import { TokenizedUser } from "./types/tokenized-user.types"
+import { Token, TokenizedUser } from "./types/tokenized-user.types"
 
 @Injectable()
 export class AuthService {
@@ -25,9 +25,6 @@ export class AuthService {
   ) {}
 
   async signup(userDto: CreateUserDto): Promise<TokenizedUser> {
-    const existingUser = await this.userModel.exists({ email: userDto.email })
-    if (existingUser) throw new BadRequestException("User already exists")
-
     const hashedPassword = await this.hashData(userDto.password)
 
     try {
@@ -35,9 +32,10 @@ export class AuthService {
         ...userDto,
         password: hashedPassword,
       })
-
-      delete newUser.password
-      return newUser
+      const token = await this.getTokens(newUser.id, newUser.email)
+      await this.updateRefreshTokenHash(newUser.id, token.refresh_token)
+      const sanitizedUser = { ...newUser.toObject(), password: "hidden" }
+      return { ...sanitizedUser, ...token }
     } catch (err) {
       if (err instanceof MongooseError) {
         throw new InternalServerErrorException("Database error")
@@ -47,20 +45,7 @@ export class AuthService {
     }
   }
 
-  async signToken(userId: number, email: string): Promise<string> {
-    const payload = {
-      sub: userId,
-      email,
-    }
-
-    return this.jwt.signAsync(payload, {
-      expiresIn: "1h",
-    })
-  }
-
-  // async validateUser (payload){}
-
-  async login(user: LoginUserDto) {
+  async login(user: LoginUserDto): Promise<TokenizedUser> {
     const currentUser = await this.userModel.findOne({ email: user.email })
     if (!currentUser) throw new BadRequestException("User not found")
 
@@ -70,29 +55,14 @@ export class AuthService {
     )
     if (!isPasswordValid) throw new BadRequestException("Invalid password")
 
-    const token = await this.signToken(currentUser.id, currentUser.email)
+    const token = await this.getTokens(currentUser.id, currentUser.email)
+    await this.updateRefreshTokenHash(currentUser.id, token.refresh_token)
+
+    const sanitizedUser = { ...currentUser.toObject(), password: "hidden" }
 
     return {
-      access_token: token,
-      user: {
-        id: currentUser.id,
-        email: currentUser.email,
-      },
-    }
-  }
-
-  async refresh(user: LoginUserDto) {
-    const currentUser = await this.userModel.findOne({ email: user.email })
-    if (!currentUser) throw new BadRequestException("User not found")
-
-    const token = await this.signToken(currentUser.id, currentUser.email)
-
-    return {
-      access_token: token,
-      user: {
-        id: currentUser.id,
-        email: currentUser.email,
-      },
+      ...sanitizedUser,
+      ...token,
     }
   }
 
@@ -101,7 +71,46 @@ export class AuthService {
     this.revokedTokens.push(user.token)
   }
 
+  // Helper functions
+
+  async getTokens(userId: string, email: string): Promise<Token> {
+    const [at, rt] = await Promise.all([
+      this.jwt.signAsync(
+        {
+          sub: userId,
+          email,
+        },
+        {
+          expiresIn: "15min",
+          secret: this.configService.get<string>("JWT_AT_SECRET"),
+        },
+      ),
+
+      this.jwt.signAsync(
+        {
+          sub: userId,
+          email,
+        },
+        {
+          expiresIn: 60 * 60 * 24 * 7,
+          secret: this.configService.get<string>("JWT_RT_SECRET"),
+        },
+      ),
+    ])
+
+    return {
+      access_token: at,
+      refresh_token: rt,
+    }
+  }
+
   async hashData(data: string): Promise<string> {
     return await argon2.hash(data)
+  }
+
+  async updateRefreshTokenHash(userId: string, refreshToken: string) {
+    const hash = await this.hashData(refreshToken)
+
+    await this.userModel.updateOne({ _id: userId }, { refreshToken: hash })
   }
 }
