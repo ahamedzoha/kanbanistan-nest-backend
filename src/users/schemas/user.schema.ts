@@ -12,6 +12,24 @@ export class User {
   @Prop({ required: true })
   password: string
 
+  @Prop({ type: String, default: null })
+  firstName: string
+
+  @Prop({ type: String, default: null })
+  lastName: string
+
+  @Prop({ type: Boolean, default: false })
+  isVerified: boolean
+
+  @Prop({ type: String, default: null })
+  refreshToken: string
+
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date
+
+  @Prop({ type: Date, default: Date.now })
+  updatedAt: Date
+
   //   @Prop({ type: Object })
   //   profile: Record<string, any>
 

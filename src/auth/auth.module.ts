@@ -5,7 +5,8 @@ import { JwtModule } from "@nestjs/jwt"
 import { MongooseModule } from "@nestjs/mongoose"
 import { UserSchema } from "src/users/schemas/user.schema"
 import { JwtStrategy } from "./strategies/jwt.strategy"
-import { ConfigService } from "@nestjs/config"
+import { AtJwtStrategy } from "./strategies/jwt-at.strategy"
+import { RtJwtStrategy } from "./strategies/jwt-rt.strategy"
 
 @Module({
   imports: [
@@ -15,15 +16,9 @@ import { ConfigService } from "@nestjs/config"
         schema: UserSchema,
       },
     ]),
-    JwtModule.registerAsync({
-      global: true,
-      useFactory: async (config: ConfigService) => ({
-        secret: config.get<string>("JWT_SECRET"),
-      }),
-      inject: [ConfigService],
-    }),
+    JwtModule.register({}),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, AtJwtStrategy, RtJwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
