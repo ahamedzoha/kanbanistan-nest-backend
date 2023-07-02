@@ -65,8 +65,6 @@ export class AuthService {
   }
 
   async logout(user: LogoutUserDto) {
-    // TODO: Implement logout by invalidating the token
-
     try {
       await this.userModel.updateMany(
         {
