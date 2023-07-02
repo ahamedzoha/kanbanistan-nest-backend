@@ -1,10 +1,9 @@
 import { Body, Controller, Get, UseGuards } from "@nestjs/common"
 import { UsersService } from "./users.service"
-import { JwtGuard } from "src/auth/guards/jwt.guard"
+
 import { GetUser } from "src/auth/decorators/get-user.decorator"
 import { User } from "./schemas/user.schema"
 
-@UseGuards(JwtGuard)
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
