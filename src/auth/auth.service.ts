@@ -16,8 +16,6 @@ import { Token, TokenizedUser } from "./types/tokenized-user.types"
 
 @Injectable()
 export class AuthService {
-  private readonly revokedTokens: string[] = []
-
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwt: JwtService,
@@ -68,7 +66,45 @@ export class AuthService {
 
   async logout(user: LogoutUserDto) {
     // TODO: Implement logout by invalidating the token
-    this.revokedTokens.push(user.token)
+
+    try {
+      await this.userModel.updateMany(
+        {
+          _id: user.sub,
+          refreshToken: { $ne: null },
+        },
+        {
+          $set: { refreshToken: null },
+        },
+      )
+
+      return {
+        message: "Logout successful",
+        code: 200,
+      }
+    } catch (err) {
+      if (err instanceof MongooseError) {
+        throw new InternalServerErrorException("Database error")
+      } else {
+        throw new BadRequestException(err.message)
+      }
+    }
+  }
+
+  async refresh(userId: string, refreshToken: string) {
+    const user = await this.userModel.findById(userId)
+    if (!user) throw new BadRequestException("User not found")
+
+    if (!user.refreshToken)
+      throw new BadRequestException("Invalid refresh token")
+
+    const rtMatches = await argon2.verify(user.refreshToken, refreshToken)
+    if (!rtMatches) throw new BadRequestException("Invalid refresh token")
+
+    const token = await this.getTokens(user.id, user.email)
+    await this.updateRefreshTokenHash(user.id, token.refresh_token)
+
+    return token
   }
 
   // Helper functions
