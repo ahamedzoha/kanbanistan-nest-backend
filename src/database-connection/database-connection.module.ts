@@ -1,6 +1,6 @@
 import { Global, Module } from "@nestjs/common"
-import { MongooseModule, MongooseModuleFactoryOptions } from "@nestjs/mongoose"
-import { ConfigModule, ConfigService } from "@nestjs/config"
+import { MongooseModule } from "@nestjs/mongoose"
+import { ConfigService } from "@nestjs/config"
 
 /**
  * @description
@@ -24,7 +24,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>("MONGODB_URI"),
       }),
@@ -34,4 +33,3 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
   exports: [MongooseModule],
 })
 export class DatabaseConnectionModule {}
-console.log("database connections", process.env.MONGODB_URI)
